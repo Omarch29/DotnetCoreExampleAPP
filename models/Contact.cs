@@ -24,11 +24,14 @@ namespace Solstice.API.models
         }
     }
 
-
     public class Name
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
+
+        public string Forename() {
+            return $"{FirstName} {LastName}";
+        }       
     }
 
 }

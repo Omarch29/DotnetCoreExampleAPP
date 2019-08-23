@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Solstice.API.models;
 
@@ -11,7 +12,8 @@ namespace Solstice.API.DATA
 
         Task<Contact> GetContactRecord(int Id);
 
-        Task<Contact> UpdateContactRecord(Contact contact);   
-        
+        Task<Contact> UpdateContactRecord(Contact contact);
+
+        Task<IList<Contact>> GetAllContacts();
     }
 }

@@ -8,5 +8,15 @@ namespace Solstice.API.models
         public bool IsPersonal { get; set; }
 
         public Contact Contact { get; set; }
+
+        public override string ToString()
+        {
+            return $"{WorkOrPersonal()}: {Number}";
+        }
+
+        private string WorkOrPersonal()
+        {
+            return IsPersonal ? "Personal" : "Work";
+        }
     }
 }

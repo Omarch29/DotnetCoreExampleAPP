@@ -14,5 +14,9 @@ namespace Solstice.API.models
         public string State { get; set; }
 
         public int ZipCode { get; set; }
+
+        public override string ToString() {
+            return $"{Number} {Street}, {City}, {State}, ZIPCODE: {ZipCode}";
+        }
     }
 }

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Solstice.API.models;
@@ -36,6 +37,11 @@ namespace Solstice.API.DATA
             origin = contact;
             await _context.SaveChangesAsync();
             return contact;
+        }
+
+        public async Task<IList<Contact>> GetAllContacts()
+        {
+            return await _context.Contacts.ToListAsync();
         }
     }
 }
