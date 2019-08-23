@@ -10,14 +10,11 @@ namespace Solstice.API.models
         public string ProfileImage { get; set; }
         public Name Name { get; set; }
         public string Company { get; set; }
-
         public string Email { get; set; }
         public DateTime Birthdate { get; set; }
         // Complex Property
         public Address Address { get; set; }
-
         public ICollection<PhoneNumber> PhoneNumbers { get; set; }
-
         public Contact()
         {
             PhoneNumbers = new Collection<PhoneNumber>();

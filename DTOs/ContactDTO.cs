@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Solstice.API.DTOs
 {
     public class ContactDTO
@@ -13,6 +15,14 @@ namespace Solstice.API.DTOs
 
         public string Address{ get; set; }
 
-        public string[] PhoneNumbers { get; set; }
+        public IList<PhoneNumberDTO> PhoneNumbers { get; set; }
+    }
+
+
+    public class PhoneNumberDTO
+    {
+        public int Id { get; set; }
+        public string Number { get; set; }
+        public string Type { get; set; }
     }
 }

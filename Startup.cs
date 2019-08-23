@@ -1,4 +1,7 @@
-﻿using System.Net;
+﻿using System;
+using System.IO;
+using System.Net;
+using System.Reflection;
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
@@ -28,7 +31,9 @@ namespace Solstice.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            services.AddDbContext<DataContext>(x => x.UseSqlite(Configuration.GetConnectionString("SqliteConnection")));
+            services.AddDbContext<DataContext>(x => x.UseSqlite(Configuration.GetConnectionString("SqliteConnection"))
+                .EnableSensitiveDataLogging(true)
+            );
             /* services.AddDbContext<DataContext>(x => x.UseMySql(Configuration.GetConnectionString("MysqlConnection"))
              .ConfigureWarnings(warnings => warnings.Ignore(CoreEventId.IncludeIgnoredWarning)));
             */
@@ -36,7 +41,22 @@ namespace Solstice.API
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "Solstice API",
+                    Description = "A simple example ASP.NET Core Web API",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Omar Chahdi Beltrame",
+                        Email = "OmarChahdi@gmail.com",
+                        Url = new Uri("https://www.linkedin.com/in/omar-chahdi-beltrame/"),
+                    }
+                });
+                // Set the comments path for the Swagger JSON and UI.
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
             });
 
             services.AddCors();
@@ -46,7 +66,7 @@ namespace Solstice.API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env,Seed seeder)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, Seed seeder)
         {
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.
@@ -54,9 +74,11 @@ namespace Solstice.API
 
             // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
             // specifying the Swagger JSON endpoint.
+
+
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Solstice Example V1");
                 c.RoutePrefix = string.Empty;
             });
 
@@ -66,8 +88,10 @@ namespace Solstice.API
             }
             else
             {
-                app.UseExceptionHandler(builder => {
-                    builder.Run(async context => {
+                app.UseExceptionHandler(builder =>
+                {
+                    builder.Run(async context =>
+                    {
                         context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                         var error = context.Features.Get<IExceptionHandlerFeature>();
                         if (error != null)

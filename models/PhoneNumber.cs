@@ -14,7 +14,7 @@ namespace Solstice.API.models
             return $"{WorkOrPersonal()}: {Number}";
         }
 
-        private string WorkOrPersonal()
+        public string WorkOrPersonal()
         {
             return IsPersonal ? "Personal" : "Work";
         }
